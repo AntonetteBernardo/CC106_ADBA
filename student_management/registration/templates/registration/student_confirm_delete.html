@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Delete</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Student directory</p>
+                <h1>Confirm deletion</h1>
+            </div>
+        </header>
+
+        <p>
+            Delete <strong>{{ student.first_name }} {{ student.last_name }}</strong>
+            ({{ student.student_id }})? This action cannot be undone.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <nav class="page-actions" aria-label="Delete confirmation">
+                <button class="button-danger" type="submit">Delete student</button>
+                <a class="button button-secondary" href="{% url 'student_detail' student.pk %}">
+                    Cancel
+                </a>
+            </nav>
+        </form>
+    </main>
+</body>
+</html>

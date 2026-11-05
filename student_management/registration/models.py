@@ -1,7 +1,9 @@
+
 from django.db import models
 
 
 class Student(models.Model):
+
     GENDER_CHOICES = [
         ('Male', 'Male'),
         ('Female', 'Female'),
@@ -33,4 +35,4 @@ class Student(models.Model):
     )
 
     def __str__(self):
-        return f"{self.student_id} {self.first_name} {self.last_name}"
+        return f"{self.student_id} - {self.first_name} {self.last_name}"

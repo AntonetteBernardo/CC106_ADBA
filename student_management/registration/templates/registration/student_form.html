@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Student directory</p>
+                <h1>{{ page_title }}</h1>
+            </div>
+        </header>
+
+        <form class="student-form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <nav class="page-actions" aria-label="Form actions">
+                <button type="submit">Save student</button>
+                <a class="button button-secondary" href="{% url 'student_list' %}">
+                    Cancel
+                </a>
+            </nav>
+        </form>
+    </main>
+</body>
+</html>
+

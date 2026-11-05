@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <main class="page-shell">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">Student record</p>
+                <h1>{{ student.first_name }} {{ student.last_name }}</h1>
+            </div>
+            <span class="student-id">{{ student.student_id }}</span>
+        </header>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="messages" role="status">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <dl class="student-details">
+            <div class="detail-item">
+                <dt>First name</dt>
+                <dd>{{ student.first_name }}</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Last name</dt>
+                <dd>{{ student.last_name }}</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Gender</dt>
+                <dd>{{ student.gender }}</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Date of birth</dt>
+                <dd>{{ student.date_of_birth }}</dd>
+            </div>
+            <div class="detail-item">
+                <dt>Contact number</dt>
+                <dd>{{ student.contact_number }}</dd>
+            </div>
+        </dl>
+
+        <nav class="page-actions" aria-label="Student actions">
+            <a class="button" href="{% url 'student_update' student.pk %}">
+                Edit record
+            </a>
+            <a class="button button-secondary" href="{% url 'student_list' %}">
+                Back to directory
+            </a>
+        </nav>
+    </main>
+</body>
+</html>
