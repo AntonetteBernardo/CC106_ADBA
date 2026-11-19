@@ -234,3 +234,178 @@ td {
 		white-space: nowrap;
 	}
 }
+
+.dashboard-container {
+	width: min(100%, 1200px);
+	margin: 0 auto;
+}
+
+.dashboard-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	padding: 22px;
+	border-radius: 10px;
+	background: var(--accent);
+	color: #fff;
+}
+
+.dashboard-header h1 {
+	margin: 0 0 10px;
+	color: #fff;
+}
+
+.dashboard-header p {
+	margin: 5px 0;
+}
+
+.dashboard-header button {
+	flex: 0 0 auto;
+	border-color: #fff;
+	background: #fff;
+	color: var(--accent);
+}
+
+.dashboard-actions {
+	margin: 20px 0;
+}
+
+.directory-link {
+	display: inline-block;
+	padding: 10px 15px;
+	background: var(--accent);
+	color: #fff;
+	font-weight: 700;
+}
+
+.summary-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 18px;
+	margin: 20px 0;
+}
+
+.summary-card,
+.report-section {
+	padding: 20px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--surface);
+	box-shadow: 0 2px 8px rgb(32 50 46 / 6%);
+}
+
+.summary-card {
+	border-left: 5px solid var(--accent-dark);
+}
+
+.male-card {
+	border-left-color: #2878b8;
+}
+
+.female-card {
+	border-left-color: #a45b9a;
+}
+
+.summary-card h2 {
+	margin: 0 0 12px;
+	font-size: 16px;
+}
+
+.summary-number {
+	margin: 0;
+	color: var(--accent);
+	font-size: 30px;
+	font-weight: 700;
+}
+
+.report-section {
+	margin: 20px 0;
+}
+
+.report-section h2 {
+	margin-top: 0;
+}
+
+.gender-row {
+	margin: 16px 0;
+}
+
+.gender-label {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 7px;
+}
+
+.bar-track {
+	height: 14px;
+	overflow: hidden;
+	border-radius: 10px;
+	background: var(--line);
+}
+
+.bar-fill {
+	height: 100%;
+	border-radius: inherit;
+}
+
+.male-bar {
+	background: #2878b8;
+}
+
+.female-bar {
+	background: #a45b9a;
+}
+
+.search-form {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 15px 0;
+}
+
+.search-form label {
+	width: 100%;
+	font-weight: 700;
+}
+
+.search-form input {
+	min-width: 220px;
+	flex: 1;
+}
+
+.clear-search {
+	padding: 8px 10px;
+}
+
+.table-wrapper {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.table-wrapper table {
+	min-width: 700px;
+}
+
+.empty-message {
+	padding: 20px;
+	color: var(--muted);
+	text-align: center;
+}
+
+@media (max-width: 700px) {
+	.dashboard-header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.summary-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.report-section {
+		padding: 14px;
+	}
+}

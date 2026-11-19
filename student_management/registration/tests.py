@@ -223,3 +223,57 @@ class StaffAuthenticationTests(TestCase):
                 response,
                 f"{reverse('login')}?next={url}",
             )
+
+    def test_dashboard_summaries_and_search(self):
+        self.client.force_login(self.staff_user)
+        Student.objects.create(
+            student_id='DASH-001',
+            first_name='Ada',
+            last_name='Lovelace',
+            gender='Female',
+            date_of_birth='1815-12-10',
+            contact_number='555-0101',
+        )
+        Student.objects.create(
+            student_id='DASH-002',
+            first_name='Grace',
+            last_name='Hopper',
+            gender='Female',
+            date_of_birth='1906-12-09',
+            contact_number='555-0102',
+        )
+        Student.objects.create(
+            student_id='DASH-003',
+            first_name='Alan',
+            last_name='Turing',
+            gender='Male',
+            date_of_birth='1912-06-23',
+            contact_number='555-0103',
+        )
+
+        response = self.client.get(
+            reverse('staff_dashboard'),
+            {'q': 'ada'},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['total_students'], 3)
+        self.assertEqual(response.context['male_students'], 1)
+        self.assertEqual(response.context['female_students'], 2)
+        self.assertAlmostEqual(response.context['male_percent'], 100 / 3)
+        self.assertAlmostEqual(response.context['female_percent'], 200 / 3)
+        self.assertEqual(
+            list(response.context['students'].values_list('student_id', flat=True)),
+            ['DASH-001'],
+        )
+        self.assertContains(response, '555-0101')
+
+    def test_dashboard_percentages_are_zero_without_students(self):
+        self.client.force_login(self.staff_user)
+        response = self.client.get(reverse('staff_dashboard'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['total_students'], 0)
+        self.assertEqual(response.context['male_percent'], 0)
+        self.assertEqual(response.context['female_percent'], 0)
+        self.assertContains(response, 'No student records found.')
