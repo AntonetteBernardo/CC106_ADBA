@@ -1,10 +1,19 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 from .models import Student
 
 
 class StudentRegistrationTests(TestCase):
+    def setUp(self):
+        staff_user = get_user_model().objects.create_user(
+            username='teststaff',
+            password='Test-Staff-2026',
+            is_staff=True,
+        )
+        self.client.force_login(staff_user)
+
     def test_registration_page_is_available_at_canonical_and_legacy_urls(self):
         response = self.client.get(reverse('student_registration'))
         self.assertEqual(response.status_code, 200)
@@ -151,3 +160,66 @@ class StudentRegistrationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Student deleted successfully.')
         self.assertFalse(Student.objects.filter(pk=student.pk).exists())
+
+
+class StaffAuthenticationTests(TestCase):
+    def setUp(self):
+        self.staff_user = get_user_model().objects.create_user(
+            username='staff',
+            password='Test-Staff-2026',
+            is_staff=True,
+        )
+        self.normal_user = get_user_model().objects.create_user(
+            username='student',
+            password='Test-Student-2026',
+            is_staff=False,
+        )
+
+    def test_login_page_is_public_and_invalid_login_fails(self):
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            reverse('login'),
+            {'username': 'staff', 'password': 'wrong-password'},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Invalid username or password')
+
+    def test_staff_login_dashboard_and_logout(self):
+        response = self.client.post(
+            reverse('login'),
+            {'username': 'staff', 'password': 'Test-Staff-2026'},
+            follow=True,
+        )
+        self.assertRedirects(
+            response,
+            reverse('staff_dashboard'),
+        )
+        self.assertContains(response, 'Welcome, staff!')
+
+        response = self.client.post(reverse('logout'), follow=True)
+        self.assertRedirects(response, reverse('login'))
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+
+    def test_protected_views_require_staff_access(self):
+        protected_urls = [
+            reverse('staff_dashboard'),
+            reverse('student_list'),
+            reverse('student_create'),
+        ]
+
+        for url in protected_urls:
+            response = self.client.get(url)
+            self.assertRedirects(
+                response,
+                f"{reverse('login')}?next={url}",
+            )
+
+        self.client.force_login(self.normal_user)
+        for url in protected_urls:
+            response = self.client.get(url)
+            self.assertRedirects(
+                response,
+                f"{reverse('login')}?next={url}",
+            )

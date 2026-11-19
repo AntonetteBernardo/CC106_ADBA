@@ -5,12 +5,12 @@
 	--ink: #20322e;
 	--muted: #64746f;
 	--line: #d7e1dc;
-	--accent: #17685b;
-	--accent-dark: #105248;
+	--accent: #0c2e77;
+	--accent-dark: #1252c9;
 	--danger: #a53d35;
 }
 
-* {
+* {     
 	box-sizing: border-box;
 }
 
